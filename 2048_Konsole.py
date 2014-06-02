@@ -52,6 +52,16 @@ def zugRechts():
 		#Zeile in feld zurueck ueberfuehren
 		for x in [3,2,1,0]:
 			feld[y][x] = hilfsfeld[x]
+
+def zugLinks():
+	for y in range(4):
+		hilfsfeld = []
+		for x in range(4):
+			hilfsfeld.append(feld[y][3-x])			#!!! 3-
+		hilfsfeld = entferneNull(hilfsfeld)
+		hilfsfeld = addiere(hilfsfeld)
+		for x in [3,2,1,0]:
+			feld[y][x] = hilfsfeld[3-x]
 		
 			
 def ausgabeFeld():
@@ -75,7 +85,9 @@ while eingabe != "x":			#x... Aufgeben
 	if (eingabe == "w"):
 		pass
 	elif (eingabe == "a"):
-		pass
+		zugLinks()
+		neuerStein()
+		ausgabeFeld()
 	elif (eingabe == "s"):
 		pass
 		#print entferneNull([2,0,0,2])
