@@ -22,6 +22,7 @@ def neuerStein():
 			passt = True
 
 def entferneNull(hilfsfeld):
+	global steinBewegt
 	for start in [3,2,1]:							
 		if (hilfsfeld[start] == 0):
 			i = start
@@ -29,12 +30,17 @@ def entferneNull(hilfsfeld):
 				i -= 1
 			hilfsfeld[start] = hilfsfeld[i]
 			hilfsfeld[i] = 0
+			if (hilfsfeld[start] != 0):
+				steinBewegt = True
 	return hilfsfeld
 
 def addiere(hilfsfeld):
+	global steinBewegt
 	for i in [3,2,1]:
 		if (hilfsfeld[i] == hilfsfeld[i-1]):
 			hilfsfeld[i] *= 2
+			if (hilfsfeld[i] != 0):
+				steinBewegt = True
 			hilfsfeld[i-1] = 0
 			hilfsfeld = entferneNull(hilfsfeld)
 	return hilfsfeld
@@ -102,24 +108,40 @@ def ausgabeFeld(feld):
 ###################################################
 
 def left_key(event):
+	global steinBewegt
+	steinBewegt = False
 	zugLinks()
-	neuerStein()
+	if (steinBewegt):
+		neuerStein()
 	ausgabeFeld(feld)
+	print(steinBewegt)
 	
 def right_key(event):
+	global steinBewegt
+	steinBewegt = False
 	zugRechts()
-	neuerStein()
+	if (steinBewegt):
+		neuerStein()
 	ausgabeFeld(feld)
+	print(steinBewegt)
 	
 def up_key(event):
+	global steinBewegt
+	steinBewegt = False
 	zugOben()
-	neuerStein()
+	if (steinBewegt):
+		neuerStein()
 	ausgabeFeld(feld)
+	print(steinBewegt)
 	
 def down_key(event):
+	global steinBewegt
+	steinBewegt = False
 	zugUnten()
-	neuerStein()
+	if (steinBewegt):
+		neuerStein()
 	ausgabeFeld(feld)
+	print(steinBewegt)
 
 
 ##############################################
@@ -148,6 +170,7 @@ feld = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 neuerStein()
 neuerStein()
 ausgabeFeld(feld)
+steinBewegt = False				#zeigt an, ob ein Stein bewegt wurde --> Auswirkungen auf "neuerStein()"
 
 #MAIN
 root.mainloop()

@@ -8,3 +8,10 @@ Das starten des Programmes ist ganz einfach:
 	2) Starte die Konsole und navigiere an die Stelle, an der die Datei "2048.py" liegt
 	3) Starte das Spiel mit "python3 2048.py"
 	4) Viel Spaß beim zocken ;)
+	
+	
+	
+TODO:
+- Hilfe-Menu
+- Punktesystem
+- farbige Felder angepasst an die Zahl auf dem Feld
