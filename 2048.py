@@ -5,6 +5,9 @@
 
 import tkinter
 import random as r
+from tkinter import Menu
+import os
+import sys
 
 ########## Konsolen-Programm-Teile ###############
 ##################################################
@@ -13,6 +16,8 @@ import random as r
 
 def neuerStein():
 	global feld
+	global punkte
+
 	passt = False
 	while passt == False:
 		x = r.randint(0,3)
@@ -20,6 +25,9 @@ def neuerStein():
 		if (feld[x][y] == 0):
 			feld[x][y] = 2
 			passt = True
+	punkte += 2
+	if (punkte >= 0):
+		print("Aktuelle Punktzahl: " + str(punkte))
 
 def entferneNull(hilfsfeld):
 	global steinBewegt
@@ -106,7 +114,7 @@ def ausgabeFeld(feld):
 				tmp = feld[y][x]
 			bearbeiteLabel(x,y,tmp)
 
-			if (feld[y][x] == 0):
+			if (feld[y][x] == 0):			#Farbe
 				color = "#FFFFFF"
 			elif (feld[y][x] == 2):
 				color = "#FFFF33"
@@ -171,6 +179,33 @@ def down_key(event):
 	ausgabeFeld(feld)
 	#print(steinBewegt)
 
+############### Menu - Funktionen ############
+##############################################
+
+def saveAndQuit():
+	os.system("clear")
+	name = input("Gib deinen Namen ein: ")
+	my_file = open("highscore", "a")
+	my_file.write(str(punkte) + " " + name + "\n")
+	my_file.close()
+	root.quit()
+
+def control():
+	os.system("clear")
+	print("Klicke eine Pfeiltaste und bestimmt damit die Richtung, in die du die Steine bewegen willst!")
+	
+def about():
+	os.system("clear")
+	print("Bei diesem Spiel geht es darum, moeglichst viele Runden zu 'ueberleben'.\n\
+Indem du eine Richtung vorgibst, werden alle Steine versuchen, sich in diese Richtung zu bewegen.\n\
+Ein Stein verschiebt sich in eine Richtung, wenn die Stelle neben ihm frei oder ein Stein mit dem gleichen Zahlenwert ist.\n\
+Der Stein kann auch erst ein Stueck 'wandern' bevor er auf einen gleichartigen Stein stoesst.\n\
+Treffen nun zwei gleichartige Steine aufeinander, so verbinden sie sich. Dabei addieren sich ihre Betraege.\n\
+Nach jedem Zug, erscheint irgendwo auf dem Feld zufaellig ein neuer Stein mit dem Wert: 2.\n\n\
+Entwickle jetzt eine Strategie, mit der du ueberlebst!!!")
+
+def showHighscore():
+	os.system("gedit highscore")
 
 ##############################################
 ##############################################
@@ -179,6 +214,21 @@ def down_key(event):
 #1) Tkinter-Zeugs
 root = tkinter.Tk()
 root.geometry("440x440+500+200")
+
+menu = tkinter.Menu(root)
+root.config(menu=menu)
+filemenu = Menu(menu)
+menu.add_cascade(label="Datei", menu=filemenu)
+filemenu.add_command(label="Punktzahl speichern und beenden", command=saveAndQuit)
+filemenu.add_command(label="Highscore anzeigen", command=showHighscore)
+filemenu.add_separator()
+filemenu.add_command(label="Beenden", command=root.quit)
+
+helpmenu = Menu(menu)
+menu.add_cascade(label="Hilfe", menu=helpmenu)
+helpmenu.add_command(label="Über", command=about)
+helpmenu.add_command(label="steuerung", command=control)
+
 C = tkinter.Canvas(root, height=440, width=440)
 label = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 square = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
@@ -187,7 +237,8 @@ for y in range(4):
 		square[y][x] = C.create_rectangle(5+110*x,5+110*y,110*x+105,110*y+105, width=5)
 		label[y][x] = C.create_text(55+x*110, 55+y*110, text = "", font=("Courier",25,"bold"))
 		C.pack()
-		
+
+punkte = -4		
 
 root.bind("<Left>", left_key)
 root.bind("<Right>", right_key)
