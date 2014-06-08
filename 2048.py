@@ -93,16 +93,44 @@ def zugUnten():
 def bearbeiteLabel(x, y, zahl):
 	global C
 	global label
+	global square
+	C.itemconfigure(square[y][x], fill="#00FF00")
 	C.itemconfigure(label[y][x], text = str(zahl))
 
 def ausgabeFeld(feld):
 	for y in range(4):
 		for x in range(4):
-			if (feld[y][x] == 0):
+			if (feld[y][x] == 0):			#Zahl
 				tmp = ""
 			else:
 				tmp = feld[y][x]
 			bearbeiteLabel(x,y,tmp)
+
+			if (feld[y][x] == 0):
+				color = "#FFFFFF"
+			elif (feld[y][x] == 2):
+				color = "#FFFF33"
+			elif (feld[y][x] == 4):
+				color = "#E8EC41"
+			elif (feld[y][x] == 8):
+				color = "#D1DA4F"
+			elif (feld[y][x] == 16):
+				color = "#B9C75D"
+			elif (feld[y][x] == 32):
+				color = "#A2B56B"
+			elif (feld[y][x] == 64):
+				color = "#8BA279"
+			elif (feld[y][x] == 128):
+				color = "#749086"
+			elif (feld[y][x] == 256):
+				color = "#5D7D94"
+			elif (feld[y][x] == 512):
+				color = "#466BA2"
+			elif (feld[y][x] == 1024):
+				color = "#2E58B0"
+			elif (feld[y][x] == 2048):
+				color = "#1746BE"
+			C.itemconfigure(square[y][x], fill=color)
 
 ################# Key-Events ######################
 ###################################################
@@ -114,7 +142,7 @@ def left_key(event):
 	if (steinBewegt):
 		neuerStein()
 	ausgabeFeld(feld)
-	print(steinBewegt)
+	#print(steinBewegt)
 	
 def right_key(event):
 	global steinBewegt
@@ -123,7 +151,7 @@ def right_key(event):
 	if (steinBewegt):
 		neuerStein()
 	ausgabeFeld(feld)
-	print(steinBewegt)
+	#print(steinBewegt)
 	
 def up_key(event):
 	global steinBewegt
@@ -132,7 +160,7 @@ def up_key(event):
 	if (steinBewegt):
 		neuerStein()
 	ausgabeFeld(feld)
-	print(steinBewegt)
+	#print(steinBewegt)
 	
 def down_key(event):
 	global steinBewegt
@@ -141,7 +169,7 @@ def down_key(event):
 	if (steinBewegt):
 		neuerStein()
 	ausgabeFeld(feld)
-	print(steinBewegt)
+	#print(steinBewegt)
 
 
 ##############################################
@@ -153,9 +181,10 @@ root = tkinter.Tk()
 root.geometry("440x440+500+200")
 C = tkinter.Canvas(root, height=440, width=440)
 label = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+square = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 for y in range(4):
 	for x in range(4):
-		square = C.create_rectangle(5+110*x,5+110*y,110*x+105,110*y+105, width=5)
+		square[y][x] = C.create_rectangle(5+110*x,5+110*y,110*x+105,110*y+105, width=5)
 		label[y][x] = C.create_text(55+x*110, 55+y*110, text = "", font=("Courier",25,"bold"))
 		C.pack()
 		
